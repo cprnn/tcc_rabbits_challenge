@@ -38,6 +38,7 @@ dependencies:
   flame: ^1.17.0
   flame_tiled: ^1.20.1
   flutter_blockly: ^1.4.5
+  build_runner: ^2.4.9
 
 dev_dependencies:
   flutter_test:
@@ -65,6 +66,7 @@ flutter:
   assets:
    - assets/tiles/
    - assets/images/Terrain/
+   - assets/images/HUD/
    - assets/images/Main Characters/Mask Dude/
    - assets/images/Main Characters/Ninja Frog/
    - assets/images/Main Characters/Pink Man/

@@ -1,0 +1,12 @@
+targets:
+  $default:
+    builders:
+      build_runner:
+        generate_for:
+          - test/**/*.dart
+          - lib/**/*.dart
+
+    before_run:
+      - flutter pub get
+      - flutter pub get outdated
+      - flutter pub run build_runner build
