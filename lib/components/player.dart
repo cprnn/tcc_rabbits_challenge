@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
+import 'package:tcc_rabbits_challenge/components/collision_block.dart';
+import 'package:tcc_rabbits_challenge/components/utils.dart';
 import 'package:tcc_rabbits_challenge/rabbits_challenge.dart';
 
 enum PlayerState {
@@ -34,14 +36,26 @@ class Player extends SpriteAnimationGroupComponent
 //Frame animation time
   final double stepTime = 0.05;
 
+//Gravity and fall controls
+  final double _gravity = 9.8;
+  final double _jumpForce = 460;
+  final double _terminalVelocity = 300;
+
 //Controls the direction of the movement of the player
   double horizontalMovement = 0;
   double moveSpeed = 100;
   Vector2 velocity = Vector2.zero();
 
+//Checks vertical collision and jump
+  bool isOnGround = false;
+  bool hasJumped = false;
+
+  List<CollisionBlock> collisionBlocks = [];
+
   @override
   FutureOr<void> onLoad() {
     _loadAllAnimations();
+    debugMode = true; //TODO: do not forget to remove this
     return super.onLoad();
   }
 
@@ -50,10 +64,16 @@ class Player extends SpriteAnimationGroupComponent
     //dt: delta time
     _updatePlayerState();
     _updatePlayerPosition(dt);
+
+    _checkHorizontalCollisions();
+    _applyGravity(dt);
+
+    _checkVerticalCollisions();
+
     super.update(dt);
   }
 
-//player movement -> change this to react with Blockly commands
+//player movement -> TODO: change this to react with Blockly commands
   @override
   bool onKeyEvent(KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
     horizontalMovement = 0;
@@ -65,6 +85,8 @@ class Player extends SpriteAnimationGroupComponent
 
     horizontalMovement += isLeftKeyPressed ? -1 : 0;
     horizontalMovement += isRightKeyPressed ? 1 : 0;
+
+    hasJumped = keysPressed.contains(LogicalKeyboardKey.space);
 
     return super.onKeyEvent(event, keysPressed);
   }
@@ -113,13 +135,68 @@ class Player extends SpriteAnimationGroupComponent
     }
 
     //If moving, set running animation
-    if(velocity.x > 0 || velocity.x < 0) playerState = PlayerState.running;
+    if (velocity.x > 0 || velocity.x < 0) playerState = PlayerState.running;
 
     current = playerState;
   }
 
   void _updatePlayerPosition(double dt) {
+    if (hasJumped) _playerJump(dt);
+
     velocity.x = horizontalMovement * moveSpeed;
     position.x += velocity.x * dt;
+  }
+
+  void _playerJump(double dt) {
+    //continue - 48:00
+  }
+
+  void _checkHorizontalCollisions() {
+    for (final block in collisionBlocks) {
+      if (!block.isPlatform) {
+        //handles all the blocks different from the platforms
+        if (checkCollision(this, block)) {
+          if (velocity.x > 0) {
+            velocity.x = 0;
+            position.x = block.position.x - width;
+            break;
+          }
+          if (velocity.x < 0) {
+            velocity.x = 0;
+            position.x = block.x + block.width + width;
+            break;
+          }
+        }
+      }
+    }
+  }
+
+  void _applyGravity(double dt) {
+    velocity.y += _gravity;
+    velocity.y = velocity.y.clamp(-_jumpForce, _terminalVelocity);
+    position.y += velocity.y * dt;
+  }
+
+  void _checkVerticalCollisions() {
+    for (final block in collisionBlocks) {
+      if (block.isPlatform) {
+        //handles the platforms
+      } else {
+        //handles the blocks
+        if (checkCollision(this, block)) {
+          if (velocity.y > 0) {
+            //falling
+            velocity.y = 0; //if the code stops here, you have quicksand!
+            position.y = block.position.y - width;
+            isOnGround = true; //for the jumping
+          }
+          if (velocity.y < 0) {
+            //going up
+            velocity.y = 0;
+            position.y = block.y + block.height + height;
+          }
+        }
+      }
+    }
   }
 }

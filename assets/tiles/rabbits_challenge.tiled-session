@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "Level-01.tmx",
+    "activeFile": "Level-05.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -11,61 +11,66 @@
     "fileStates": {
         "Level-01.tmx": {
             "expandedObjectLayers": [
-                3
+                3,
+                5
             ],
-            "scale": 0.75,
-            "selectedLayer": 2,
+            "scale": 1.5,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 452.66666666666674,
-                "y": 347.33333333333337
+                "x": 239.99999999999997,
+                "y": 431.66666666666663
             }
         },
         "Level-02.tmx": {
             "expandedObjectLayers": [
+                5,
                 2
             ],
-            "scale": 0.75,
-            "selectedLayer": 1,
+            "scale": 1,
+            "selectedLayer": 4,
             "viewCenter": {
-                "x": 257.99999999999994,
-                "y": 402
+                "x": 240,
+                "y": 431.5
             }
         },
         "Level-03.tmx": {
             "expandedObjectLayers": [
+                5,
                 2
             ],
             "scale": 0.75,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 240,
+                "x": 239.99999999999994,
                 "y": 432.6666666666667
             }
         },
         "Level-04.tmx": {
             "expandedObjectLayers": [
-                4
+                4,
+                5
             ],
-            "scale": 0.75,
-            "selectedLayer": 0,
+            "scale": 1,
+            "selectedLayer": 3,
             "viewCenter": {
                 "x": 240,
-                "y": 432.6666666666667
+                "y": 431.5
             }
         },
         "Level-05.tmx": {
             "expandedObjectLayers": [
+                5,
                 4
             ],
-            "scale": 0.75,
-            "selectedLayer": 1,
+            "scale": 1.5,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 240,
-                "y": 432.6666666666667
+                "x": 234.66666666666663,
+                "y": 343.6666666666667
             }
         },
         "RabbitsChallenge.tsx": {
-            "scaleInDock": 1,
+            "scaleInDock": 1.5,
             "scaleInEditor": 1
         }
     },
@@ -84,12 +89,12 @@
     ],
     "project": "rabbits_challenge.tiled-project",
     "recentFiles": [
-        "RabbitsChallenge.tsx",
-        "Level-05.tmx",
-        "Level-04.tmx",
-        "Level-03.tmx",
+        "Level-01.tmx",
         "Level-02.tmx",
-        "Level-01.tmx"
+        "Level-03.tmx",
+        "Level-04.tmx",
+        "RabbitsChallenge.tsx",
+        "Level-05.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="54" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="2">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="54" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="10">
  <tileset firstgid="1" source="RabbitsChallenge.tsx"/>
  <layer id="1" name="Background" width="30" height="54">
   <data encoding="csv">
@@ -176,6 +176,13 @@
 </data>
  </layer>
  <objectgroup id="2" name="Spawnpoints">
-  <object id="1" name="Player" type="Player" x="64.6667" y="430" width="32.6667" height="33.3333"/>
+  <object id="1" name="Player" type="Player" x="66" y="398" width="32.6667" height="33.3333"/>
+ </objectgroup>
+ <objectgroup id="5" name="Collisions">
+  <object id="4" type="Wall" x="32.6667" y="32.6667" width="16" height="494"/>
+  <object id="6" type="Wall" x="48.6667" y="32.6667" width="398.667" height="14"/>
+  <object id="7" type="Wall" x="432" y="46" width="16" height="482"/>
+  <object id="8" type="Wall" x="48.6667" y="511.333" width="382.667" height="15.3333"/>
+  <object id="9" type="Ground" x="49" y="465" width="383.333" height="47"/>
  </objectgroup>
 </map>
