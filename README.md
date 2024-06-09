@@ -1,16 +1,19 @@
-# tcc_rabbits_challenge
+# Trabalho de Conclusão de Curso - Rabbit's Challenge!
 
-A new Flutter project.
+Feito com ❤️ com Flutter, Flame e FlutterFlow!
 
-## Getting Started
+Obrigado especial ao Spelltorn pelo tutorial para desenvolver jogos 2D com Flutter. O passo a passo com explicações completas pode ser visto [aqui](https://youtube.com/playlist?list=PLRRATgFqhVCh8qD7xmaSbwG1vfaCddvCM&si=adnKajhjttysi_TZ).
 
-This project is a starting point for a Flutter application.
+## O que está sendo feito aqui?
 
-A few resources to get you started if this is your first Flutter project:
+Este projeto será um jogo educativo para ensino de conceitos básicos de lógica e programação, com a possibilidade de ser cross-platform, acessível por qualquer dispositivo, gratuito e em português. Para o ensino, será utilizada a tecnologia Blockly em vez de movimentação por joystick ou teclado, ou seja, o jogador movimentará o personagem conforme o código selecionado.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Projeto da interface do aplicativo está sendo desenvolvida em FlutterFlow, e será integrada ao código-fonte do projeto.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Pendências no momento:
+
+- Finalização do jogo base conforme tutorial;
+- Substituição dos personagens pelas animações específicas do jogo;
+- Substituição do código e controle por teclado e joystick pela integração com o Blockly;
+- Integração do jogo com o aplicativo desenvolvido em FlutterFlow;
+- Integração das telas do aplicativo com Firebase para armazenamento de dados;
