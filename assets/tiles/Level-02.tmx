@@ -176,7 +176,7 @@
 </data>
  </layer>
  <objectgroup id="2" name="Spawnpoints">
-  <object id="2" name="Player" type="Player" x="63.6667" y="413.167" width="30.5" height="32"/>
+  <object id="2" name="Player" type="Player" x="65.6667" y="95.167" width="30.5" height="32"/>
  </objectgroup>
  <objectgroup id="5" name="Collisions">
   <object id="7" type="Wall" x="32" y="32" width="15.3333" height="494"/>
