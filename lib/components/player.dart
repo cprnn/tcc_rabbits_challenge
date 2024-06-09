@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 import 'package:tcc_rabbits_challenge/components/collision_block.dart';
+import 'package:tcc_rabbits_challenge/components/player_hitbox.dart';
 import 'package:tcc_rabbits_challenge/components/utils.dart';
 import 'package:tcc_rabbits_challenge/rabbits_challenge.dart';
 
@@ -11,9 +13,9 @@ enum PlayerState {
   idle,
   running,
   doubleJump,
-  fall,
-  jump,
-  wallJump
+  falling,
+  jumping,
+  wallJumping
 }
 
 class Player extends SpriteAnimationGroupComponent
@@ -21,6 +23,7 @@ class Player extends SpriteAnimationGroupComponent
   //TODO:after add blockly, remove keyboard controls
   String character;
   //constructor
+  // ignore: use_super_parameters
   Player({position, this.character = 'Ninja Frog'})
       : super(
             position:
@@ -29,8 +32,8 @@ class Player extends SpriteAnimationGroupComponent
   late final SpriteAnimation idleAnimation;
   late final SpriteAnimation runningAnimation;
   late final SpriteAnimation doubleJumpAnimation;
-  late final SpriteAnimation fallAnimation;
-  late final SpriteAnimation jumpAnimation;
+  late final SpriteAnimation fallingAnimation;
+  late final SpriteAnimation jumpingAnimation;
   late final SpriteAnimation wallJumpAnimation;
 
 //Frame animation time
@@ -38,7 +41,7 @@ class Player extends SpriteAnimationGroupComponent
 
 //Gravity and fall controls
   final double _gravity = 9.8;
-  final double _jumpForce = 460;
+  final double _jumpForce = 330;
   final double _terminalVelocity = 300;
 
 //Controls the direction of the movement of the player
@@ -52,10 +55,21 @@ class Player extends SpriteAnimationGroupComponent
 
   List<CollisionBlock> collisionBlocks = [];
 
+  PlayerHitbox hitbox = PlayerHitbox(
+    offsetX: 10,
+    offsetY: 4,
+    width: 14,
+    height: 28,
+  );
+
   @override
   FutureOr<void> onLoad() {
     _loadAllAnimations();
-    debugMode = true; //TODO: do not forget to remove this
+    //debugMode = true; //TODO: do not forget to remove this andsee if its possible to change to the native hitbox component
+    add(RectangleHitbox(
+      position: Vector2(hitbox.offsetX, hitbox.offsetY),
+      size: Vector2(hitbox.width, hitbox.height),
+    ));
     return super.onLoad();
   }
 
@@ -96,8 +110,8 @@ class Player extends SpriteAnimationGroupComponent
     idleAnimation = _spriteAnimation('Idle', 11);
     runningAnimation = _spriteAnimation('Run', 12);
     doubleJumpAnimation = _spriteAnimation('Double Jump', 6);
-    fallAnimation = _spriteAnimation('Fall', 1);
-    jumpAnimation = _spriteAnimation('Jump', 1);
+    fallingAnimation = _spriteAnimation('Fall', 1);
+    jumpingAnimation = _spriteAnimation('Jump', 1);
     wallJumpAnimation = _spriteAnimation('Wall Jump', 5);
 
     animations = {
@@ -105,9 +119,9 @@ class Player extends SpriteAnimationGroupComponent
       PlayerState.idle: idleAnimation,
       PlayerState.running: runningAnimation,
       PlayerState.doubleJump: doubleJumpAnimation,
-      PlayerState.fall: fallAnimation,
-      PlayerState.jump: jumpAnimation,
-      PlayerState.wallJump: wallJumpAnimation,
+      PlayerState.falling: fallingAnimation,
+      PlayerState.jumping: jumpingAnimation,
+      PlayerState.wallJumping: wallJumpAnimation,
     };
 
 //set current animation
@@ -133,6 +147,12 @@ class Player extends SpriteAnimationGroupComponent
     } else if (velocity.x > 0 && scale.x < 0) {
       flipHorizontallyAroundCenter();
     }
+    //if player is falling
+    if (velocity.y > 0)
+      playerState = PlayerState.falling; //0 can be changed to _gravity
+
+    //if player is jumping
+    if (velocity.y < 0) playerState = PlayerState.jumping;
 
     //If moving, set running animation
     if (velocity.x > 0 || velocity.x < 0) playerState = PlayerState.running;
@@ -141,14 +161,17 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   void _updatePlayerPosition(double dt) {
-    if (hasJumped) _playerJump(dt);
+    if (hasJumped && isOnGround) _playerJump(dt);
 
     velocity.x = horizontalMovement * moveSpeed;
     position.x += velocity.x * dt;
   }
 
   void _playerJump(double dt) {
-    //continue - 48:00
+    velocity.y = -_jumpForce;
+    position.y += velocity.y * dt;
+    isOnGround = false;
+    hasJumped = false;
   }
 
   void _checkHorizontalCollisions() {
@@ -158,12 +181,12 @@ class Player extends SpriteAnimationGroupComponent
         if (checkCollision(this, block)) {
           if (velocity.x > 0) {
             velocity.x = 0;
-            position.x = block.position.x - width;
+            position.x = block.x - hitbox.offsetX - hitbox.width;
             break;
           }
           if (velocity.x < 0) {
             velocity.x = 0;
-            position.x = block.x + block.width + width;
+            position.x = block.x + block.width + hitbox.width + hitbox.offsetX;
             break;
           }
         }
@@ -181,19 +204,29 @@ class Player extends SpriteAnimationGroupComponent
     for (final block in collisionBlocks) {
       if (block.isPlatform) {
         //handles the platforms
+        if (checkCollision(this, block)) {
+          if (velocity.y > 0) {
+            velocity.y = 0;
+            position.y = block.y - hitbox.height - hitbox.offsetY;
+            isOnGround = true;
+            break;
+          }
+        }
       } else {
         //handles the blocks
         if (checkCollision(this, block)) {
           if (velocity.y > 0) {
             //falling
             velocity.y = 0; //if the code stops here, you have quicksand!
-            position.y = block.position.y - width;
+            position.y = block.y - hitbox.height - hitbox.offsetY;
             isOnGround = true; //for the jumping
+            break;
           }
           if (velocity.y < 0) {
             //going up
             velocity.y = 0;
-            position.y = block.y + block.height + height;
+            position.y = block.y + block.height - hitbox.offsetY;
+            break;
           }
         }
       }
