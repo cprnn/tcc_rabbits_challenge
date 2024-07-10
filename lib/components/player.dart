@@ -108,20 +108,22 @@ class Player extends SpriteAnimationGroupComponent
 //TODO: change the image to the bunny animation
   void _loadAllAnimations() {
     idleAnimation = _spriteAnimation('Idle', 11);
+   // idleAnimation = _spriteAnimation('Idle', 4); //add more frames to bunny on image
+   // runningAnimation = _spriteAnimation('Run', 4); //add more frames to bunny on image
     runningAnimation = _spriteAnimation('Run', 12);
-    doubleJumpAnimation = _spriteAnimation('Double Jump', 6);
+   // doubleJumpAnimation = _spriteAnimation('Double Jump', 6);
     fallingAnimation = _spriteAnimation('Fall', 1);
     jumpingAnimation = _spriteAnimation('Jump', 1);
-    wallJumpAnimation = _spriteAnimation('Wall Jump', 5);
+   // wallJumpAnimation = _spriteAnimation('Wall Jump', 5);
 
     animations = {
       //list of animations, add more as implemented
       PlayerState.idle: idleAnimation,
       PlayerState.running: runningAnimation,
-      PlayerState.doubleJump: doubleJumpAnimation,
+      //PlayerState.doubleJump: doubleJumpAnimation,
       PlayerState.falling: fallingAnimation,
       PlayerState.jumping: jumpingAnimation,
-      PlayerState.wallJumping: wallJumpAnimation,
+      //PlayerState.wallJumping: wallJumpAnimation,
     };
 
 //set current animation
@@ -148,8 +150,9 @@ class Player extends SpriteAnimationGroupComponent
       flipHorizontallyAroundCenter();
     }
     //if player is falling
-    if (velocity.y > 0)
+    if (velocity.y > 0) {
       playerState = PlayerState.falling; //0 can be changed to _gravity
+    }
 
     //if player is jumping
     if (velocity.y < 0) playerState = PlayerState.jumping;
