@@ -8,7 +8,7 @@ import 'package:tcc_rabbits_challenge/components/player.dart';
 import 'package:tcc_rabbits_challenge/components/level.dart';
 
 class RabbitsChallenge extends FlameGame
-    with HasKeyboardHandlerComponents, DragCallbacks {
+    with HasKeyboardHandlerComponents, DragCallbacks, HasCollisionDetection{
   //TODO: change to blockly handler
   @override
   Color backgroundColor() => const Color(0xFF211F30);

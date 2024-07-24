@@ -1,10 +1,10 @@
 import 'dart:async';
-
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 import 'package:tcc_rabbits_challenge/components/collision_block.dart';
-import 'package:tcc_rabbits_challenge/components/player_hitbox.dart';
+import 'package:tcc_rabbits_challenge/components/custom_hitbox.dart';
+import 'package:tcc_rabbits_challenge/components/fruit.dart';
 import 'package:tcc_rabbits_challenge/components/utils.dart';
 import 'package:tcc_rabbits_challenge/rabbits_challenge.dart';
 
@@ -19,7 +19,7 @@ enum PlayerState {
 }
 
 class Player extends SpriteAnimationGroupComponent
-    with HasGameRef<RabbitsChallenge>, KeyboardHandler {
+    with HasGameRef<RabbitsChallenge>, KeyboardHandler, CollisionCallbacks {
   //TODO:after add blockly, remove keyboard controls
   String character;
   //constructor
@@ -55,7 +55,7 @@ class Player extends SpriteAnimationGroupComponent
 
   List<CollisionBlock> collisionBlocks = [];
 
-  PlayerHitbox hitbox = PlayerHitbox(
+  CustomHitbox hitbox = CustomHitbox(
     offsetX: 10,
     offsetY: 4,
     width: 14,
@@ -103,6 +103,16 @@ class Player extends SpriteAnimationGroupComponent
     hasJumped = keysPressed.contains(LogicalKeyboardKey.space);
 
     return super.onKeyEvent(event, keysPressed);
+  }
+
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    if(other is Fruit) other.collidedWithPlayer();
+    super.onCollision(intersectionPoints, other);
+
+
+  //TODO: add a sound effect when fruit is collected
+  //TODO: add score increase or reward when fruit is collected
   }
 
 //TODO: change the image to the bunny animation

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:tcc_rabbits_challenge/rabbits_challenge.dart';
 
+//TODO: see if the scrolling background will be necessary
 class BackgroundTile extends SpriteComponent with HasGameRef<RabbitsChallenge> {
   final String color;
   BackgroundTile({
@@ -25,7 +26,7 @@ class BackgroundTile extends SpriteComponent with HasGameRef<RabbitsChallenge> {
   @override
   void update(double dt) {
     position.y += scrollSpeed;
-    double tileSize = 64;
+    double tileSize = 32;
     int scrollHeight = (game.size.y / tileSize).floor();
     if(position.y > scrollHeight * tileSize) position.y = -tileSize;
     super.update(dt);
