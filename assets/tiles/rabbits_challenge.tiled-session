@@ -11,62 +11,62 @@
     "fileStates": {
         "Level-01.tmx": {
             "expandedObjectLayers": [
-                5,
-                3
+                3,
+                5
             ],
             "scale": 1.5,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 263.3333333333333,
-                "y": 431
+                "x": 263,
+                "y": 430.3333333333333
             }
         },
         "Level-02.tmx": {
             "expandedObjectLayers": [
-                5,
-                2
+                2,
+                5
             ],
-            "scale": 1,
-            "selectedLayer": 0,
+            "scale": 1.5,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 260,
-                "y": 304.5
+                "x": 259,
+                "y": 261
             }
         },
         "Level-03.tmx": {
             "expandedObjectLayers": [
-                5,
-                2
+                2,
+                5
             ],
             "scale": 0.75,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 240,
-                "y": 432.6666666666667
+                "x": 239.33333333333326,
+                "y": 431.33333333333337
             }
         },
         "Level-04.tmx": {
             "expandedObjectLayers": [
-                5,
-                4
+                4,
+                5
             ],
             "scale": 1,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 240,
-                "y": 431.5
+                "x": 239.5,
+                "y": 430.5
             }
         },
         "Level-05.tmx": {
             "expandedObjectLayers": [
-                5,
-                4
+                4,
+                5
             ],
             "scale": 1,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 445,
-                "y": 177.5
+                "x": 366.5,
+                "y": 245.5
             }
         },
         "RabbitsChallenge.tsx": {
@@ -88,6 +88,7 @@
         "RabbitsChallenge.tsx"
     ],
     "project": "rabbits_challenge.tiled-project",
+    "property.type": "float",
     "recentFiles": [
         "Level-01.tmx",
         "Level-02.tmx",

@@ -5,13 +5,10 @@ class CollisionBlock extends PositionComponent {
 
   // ignore: use_super_parameters
   CollisionBlock({
-    position,
-    size,
+    super.position,
+    super.size,
     this.isPlatform = false,
-  }) : super(
-          position: position,
-          size: size,
-        ) {
-          //debugMode = true;  //TODO: do not forget to remove this
-        }
+  }) {
+    //debugMode = true;  //TODO: do not forget to remove this
+  }
 }

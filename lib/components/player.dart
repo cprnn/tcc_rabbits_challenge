@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:tcc_rabbits_challenge/components/collision_block.dart';
 import 'package:tcc_rabbits_challenge/components/custom_hitbox.dart';
 import 'package:tcc_rabbits_challenge/components/fruit.dart';
+import 'package:tcc_rabbits_challenge/components/saw.dart';
 import 'package:tcc_rabbits_challenge/components/utils.dart';
 import 'package:tcc_rabbits_challenge/rabbits_challenge.dart';
 
@@ -15,7 +16,9 @@ enum PlayerState {
   doubleJump,
   falling,
   jumping,
-  wallJumping
+  wallJumping,
+  hit,
+  appearing,
 }
 
 class Player extends SpriteAnimationGroupComponent
@@ -24,10 +27,7 @@ class Player extends SpriteAnimationGroupComponent
   String character;
   //constructor
   // ignore: use_super_parameters
-  Player({position, this.character = 'Ninja Frog'})
-      : super(
-            position:
-                position); //super extends the SpriteAnimationGroupComponent
+  Player({super.position, this.character = 'Ninja Frog'}); //super extends the SpriteAnimationGroupComponent
 
   late final SpriteAnimation idleAnimation;
   late final SpriteAnimation runningAnimation;
@@ -35,6 +35,8 @@ class Player extends SpriteAnimationGroupComponent
   late final SpriteAnimation fallingAnimation;
   late final SpriteAnimation jumpingAnimation;
   late final SpriteAnimation wallJumpAnimation;
+  late final SpriteAnimation hitAnimation;
+  late final SpriteAnimation appearingAnimation;
 
 //Frame animation time
   final double stepTime = 0.05;
@@ -49,9 +51,13 @@ class Player extends SpriteAnimationGroupComponent
   double moveSpeed = 100;
   Vector2 velocity = Vector2.zero();
 
-//Checks vertical collision and jump
+//Checks collisions and if jumped
   bool isOnGround = false;
   bool hasJumped = false;
+  bool gotHit = false;
+
+//Player's starting spawpoint
+  Vector2 startingPosition = Vector2.zero();
 
   List<CollisionBlock> collisionBlocks = [];
 
@@ -65,7 +71,9 @@ class Player extends SpriteAnimationGroupComponent
   @override
   FutureOr<void> onLoad() {
     _loadAllAnimations();
-    //debugMode = true; //TODO: do not forget to remove this andsee if its possible to change to the native hitbox component
+
+    startingPosition = Vector2(position.x, position.y);
+    //debugMode = true; //TODO: do not forget to remove this and see if its possible to change to the native hitbox component
     add(RectangleHitbox(
       position: Vector2(hitbox.offsetX, hitbox.offsetY),
       size: Vector2(hitbox.width, hitbox.height),
@@ -76,14 +84,16 @@ class Player extends SpriteAnimationGroupComponent
   @override
   void update(double dt) {
     //dt: delta time
-    _updatePlayerState();
-    _updatePlayerPosition(dt);
 
-    _checkHorizontalCollisions();
-    _applyGravity(dt);
+    if (!gotHit) {
+      _updatePlayerState();
+      _updatePlayerPosition(dt);
 
-    _checkVerticalCollisions();
+      _checkHorizontalCollisions();
+      _applyGravity(dt);
 
+      _checkVerticalCollisions();
+    }
     super.update(dt);
   }
 
@@ -107,24 +117,29 @@ class Player extends SpriteAnimationGroupComponent
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-    if(other is Fruit) other.collidedWithPlayer();
+    if (other is Fruit) other.collidedWithPlayer();
     super.onCollision(intersectionPoints, other);
 
+    if (other is Saw) _respawn();
 
-  //TODO: add a sound effect when fruit is collected
-  //TODO: add score increase or reward when fruit is collected
+    //TODO: add a sound effect when fruit is collected
+    //TODO: add score increase or reward when fruit is collected
   }
 
 //TODO: change the image to the bunny animation
   void _loadAllAnimations() {
+    //TODO: make this more dynamic after removing the hard coded path on _spriteAnimation
     idleAnimation = _spriteAnimation('Idle', 11);
-   // idleAnimation = _spriteAnimation('Idle', 4); //add more frames to bunny on image
-   // runningAnimation = _spriteAnimation('Run', 4); //add more frames to bunny on image
     runningAnimation = _spriteAnimation('Run', 12);
-   // doubleJumpAnimation = _spriteAnimation('Double Jump', 6);
     fallingAnimation = _spriteAnimation('Fall', 1);
     jumpingAnimation = _spriteAnimation('Jump', 1);
-   // wallJumpAnimation = _spriteAnimation('Wall Jump', 5);
+    hitAnimation = _spriteAnimation('Hit', 7);
+    appearingAnimation = _specialSpriteAnimation('Appearing', 7);
+
+    // idleAnimation = _spriteAnimation('Idle', 4); //add more frames to bunny on image
+    // runningAnimation = _spriteAnimation('Run', 4); //add more frames to bunny on image
+    // doubleJumpAnimation = _spriteAnimation('Double Jump', 6);
+    // wallJumpAnimation = _spriteAnimation('Wall Jump', 5);
 
     animations = {
       //list of animations, add more as implemented
@@ -134,6 +149,8 @@ class Player extends SpriteAnimationGroupComponent
       PlayerState.falling: fallingAnimation,
       PlayerState.jumping: jumpingAnimation,
       //PlayerState.wallJumping: wallJumpAnimation,
+      PlayerState.hit: hitAnimation,
+      PlayerState.appearing: appearingAnimation,
     };
 
 //set current animation
@@ -142,11 +159,25 @@ class Player extends SpriteAnimationGroupComponent
 
   SpriteAnimation _spriteAnimation(String state, int amount) {
     return SpriteAnimation.fromFrameData(
-      game.images.fromCache('Main Characters/$character/$state (32x32).png'),
+      game.images.fromCache(
+          'Main Characters/$character/$state (32x32).png'), //TODO: make this more dynamic, no hard coded paths
       SpriteAnimationData.sequenced(
         amount: amount,
         stepTime: 0.05,
         textureSize: Vector2.all(32),
+      ),
+    );
+  }
+
+//after correcting the hard coded _spriteAnimation, adapt or remove _specialSpriteAnimation
+  SpriteAnimation _specialSpriteAnimation(String state, int amount) {
+    return SpriteAnimation.fromFrameData(
+      game.images.fromCache(
+          'Main Characters/$state (96x96).png'), //TODO: make this more dynamic, no hard coded paths
+      SpriteAnimationData.sequenced(
+        amount: amount,
+        stepTime: 0.05,
+        textureSize: Vector2.all(96),
       ),
     );
   }
@@ -244,5 +275,26 @@ class Player extends SpriteAnimationGroupComponent
         }
       }
     }
+  }
+
+  void _respawn() {
+    const hitDuration =
+        Duration(milliseconds: 250); //50 milliseconds per frame, 7 frames
+    const appearingDuration = Duration(milliseconds: 250);
+    const canMoveDuration = Duration(milliseconds: 50);
+    gotHit = true;
+    current = PlayerState.hit;
+
+    Future.delayed(hitDuration, () {
+      scale.x = 1;
+      position = startingPosition - Vector2.all(32);
+      current = PlayerState.appearing;
+      Future.delayed(appearingDuration, () {
+        velocity = Vector2.zero();
+        position = startingPosition;
+        _updatePlayerState();
+        Future.delayed(canMoveDuration, () => gotHit = false);
+      });
+    });
   }
 }

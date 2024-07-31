@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="54" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="33">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="54" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="38">
  <tileset firstgid="1" source="RabbitsChallenge.tsx"/>
  <layer id="1" name="Background" width="30" height="54">
   <properties>
@@ -93,8 +93,8 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,95,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,97,0,0,0,
-0,0,0,117,118,118,118,118,118,118,118,118,118,118,118,118,118,118,118,118,118,118,118,118,118,118,119,0,0,0,
+0,0,0,95,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,97,0,0,0,0,0,0,0,
+0,0,0,117,118,118,118,118,118,118,118,118,118,118,118,118,118,118,118,118,118,118,118,96,96,96,96,0,0,0,
 0,0,0,139,140,140,140,140,140,140,140,140,140,140,140,140,140,140,140,140,140,140,140,140,140,140,141,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -179,12 +179,27 @@
 </data>
  </layer>
  <objectgroup id="2" name="Spawnpoints">
-  <object id="2" name="Player" type="Player" x="65.6667" y="95.167" width="32" height="32"/>
+  <object id="2" name="Player" type="Player" x="64.3334" y="109.834" width="32" height="32"/>
   <object id="27" name="Bananas" type="Fruit" x="160.667" y="192.667" width="32" height="32"/>
   <object id="28" name="Cherries" type="Fruit" x="238.667" y="271" width="32" height="32"/>
   <object id="29" name="Apple" type="Fruit" x="162.667" y="353.333" width="32" height="32"/>
-  <object id="30" name="Kiwi" type="Fruit" x="385.333" y="433.333" width="32" height="32"/>
+  <object id="30" name="Kiwi" type="Fruit" x="224.333" y="431.666" width="32" height="32"/>
   <object id="32" name="Cherries" type="Fruit" x="177.667" y="271" width="32" height="32"/>
+  <object id="34" name="Saw" type="Saw" x="352.667" y="130" width="32" height="30">
+   <properties>
+    <property name="isVertical" type="bool" value="true"/>
+    <property name="offNeg" type="float" value="5"/>
+    <property name="offPos" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="35" name="Saw" type="Saw" x="82.3333" y="447.333" width="30" height="29.3333">
+   <properties>
+    <property name="isVertical" type="bool" value="false"/>
+    <property name="offNeg" type="float" value="2"/>
+    <property name="offPos" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="37" type="Checkpoint" x="368.333" y="416.667" width="63" height="63.3333"/>
  </objectgroup>
  <objectgroup id="5" name="Collisions">
   <object id="7" type="Wall" x="32" y="32" width="15.3333" height="494"/>
@@ -192,9 +207,10 @@
   <object id="9" type="Wall" x="431.333" y="33.3333" width="14.6667" height="478.667"/>
   <object id="10" type="Wall" x="48" y="32.6667" width="382.667" height="15.3333"/>
   <object id="19" type="Block" x="161.167" y="385.667" width="283.5" height="29.1667"/>
-  <object id="20" type="Ground" x="47.3333" y="465.333" width="384.333" height="46"/>
+  <object id="20" type="Ground" x="47.3333" y="465.333" width="319.333" height="46"/>
   <object id="21" type="Block" x="33" y="305.333" width="270.667" height="30.6667"/>
   <object id="23" type="Block" x="160.666" y="224.667" width="284.667" height="30.6667"/>
   <object id="24" type="Block" x="32.3332" y="144.333" width="271.334" height="30.6667"/>
+  <object id="36" type="Ground" x="368" y="481.333" width="62.333" height="29.3333"/>
  </objectgroup>
 </map>
