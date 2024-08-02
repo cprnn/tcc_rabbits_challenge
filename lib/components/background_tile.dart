@@ -1,34 +1,28 @@
 import 'dart:async';
 import 'package:flame/components.dart';
-import 'package:tcc_rabbits_challenge/rabbits_challenge.dart';
+import 'package:flame/parallax.dart';
+import 'package:flutter/painting.dart';
 
 //TODO: see if the scrolling background will be necessary
-class BackgroundTile extends SpriteComponent with HasGameRef<RabbitsChallenge> {
+class BackgroundTile extends ParallaxComponent {
   final String color;
   BackgroundTile({
     this.color = 'Gray',
-    position,
-  }) : super(
-          position: position,
-        );
+    super.position,
+  });
 
-  final double scrollSpeed = 0.3; //if faster, dizzy
+  final double scrollSpeed = 20; //if faster, dizzy
 
   @override
-  FutureOr<void> onLoad() {
-    priority = -1;
+  FutureOr<void> onLoad() async {
+    priority = -10;
     size = Vector2.all(
-        64.6); //if use new backgrounds, make sure to make them all 64x64 bits!
-    sprite = Sprite(game.images.fromCache('Background/$color.png'));
+        64); //if use new backgrounds, make sure to make them all 64x64 bits!
+    parallax = await game.loadParallax(
+        [ParallaxImageData('Background/$color.png')],
+        baseVelocity: Vector2(0, -scrollSpeed),
+        repeat: ImageRepeat.repeat,
+        fill: LayerFill.none);
     return super.onLoad();
-  }
-
-  @override
-  void update(double dt) {
-    position.y += scrollSpeed;
-    double tileSize = 32;
-    int scrollHeight = (game.size.y / tileSize).floor();
-    if(position.y > scrollHeight * tileSize) position.y = -tileSize;
-    super.update(dt);
   }
 }

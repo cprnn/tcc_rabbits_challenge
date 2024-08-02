@@ -31,25 +31,16 @@ class Level extends World with HasGameRef<RabbitsChallenge> {
 
   void _scrollingBackground() {
     final backgroundLayer = level.tileMap.getLayer('Background');
-    const tileSize =
-        32; //64 is used in tutorial, landscape mode, change it if tiles a different size
-
-    final numTilesY = (game.size.y / tileSize).floor();
-    final numTilesX = (game.size.x / tileSize).floor();
 
     if (backgroundLayer != null) {
       final backgroundColor =
           backgroundLayer.properties.getValue('BackgroundColor');
+      final backgroundTile = BackgroundTile(
+        color: backgroundColor ?? 'Gray',
+        position: Vector2(0, 0),
+      );
 
-      for (double y = 0; y < game.size.y / numTilesY; y++) {
-        for (double x = 0; x < numTilesX; x++) {
-          final backgroundTile = BackgroundTile(
-            color: backgroundColor ?? 'Gray',
-            position: Vector2(x * tileSize, y * tileSize - tileSize),
-          );
-          add(backgroundTile);
-        }
-      }
+      add(backgroundTile);
     }
   }
 
@@ -61,6 +52,7 @@ class Level extends World with HasGameRef<RabbitsChallenge> {
         switch (spawnPoint.class_) {
           case 'Player':
             player.position = Vector2(spawnPoint.x, spawnPoint.y);
+            player.scale.x = 1;
             add(player);
             break;
           case 'Fruit':
@@ -86,7 +78,7 @@ class Level extends World with HasGameRef<RabbitsChallenge> {
             final checkpoint = Checkpoint(
                 position: Vector2(spawnPoint.x, spawnPoint.y),
                 size: Vector2(spawnPoint.width, spawnPoint.height));
-                add(checkpoint);
+            add(checkpoint);
             break;
           default:
         }

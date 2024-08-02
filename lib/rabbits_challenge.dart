@@ -8,14 +8,19 @@ import 'package:tcc_rabbits_challenge/components/player.dart';
 import 'package:tcc_rabbits_challenge/components/level.dart';
 
 class RabbitsChallenge extends FlameGame
-    with HasKeyboardHandlerComponents, DragCallbacks, HasCollisionDetection{
+    with HasKeyboardHandlerComponents, DragCallbacks, HasCollisionDetection {
   //TODO: change to blockly handler
   @override
   Color backgroundColor() => const Color(0xFF211F30);
-  late final CameraComponent cam;
+  late CameraComponent cam;
   Player player = Player(character: 'Mask Dude');
   late JoystickComponent joystick;
-  bool showJoystick = false;  //control if the joystick is active, if false, keyboard is active
+  bool showJoystick = false;
+  List<String> levelNames = [
+    'Level-02',
+    'Level-02', //TODO: add here all the levels
+  ];
+  int currentLevelIndex = 0;
 
   @override
   FutureOr<void> onLoad() async {
@@ -23,14 +28,7 @@ class RabbitsChallenge extends FlameGame
     await images
         .loadAllImages(); // TODO: change this to loadAll and specify wich images load
 
-    @override
-    final world = Level(player: player, levelName: 'Level-02');
-
-    cam = CameraComponent.withFixedResolution(
-        world: world, width: 480, height: 864);
-    cam.viewfinder.anchor = Anchor.topLeft;
-
-    addAll([cam, world]);
+    _loadLevel();
 
     if (showJoystick) {
       addJoystick();
@@ -80,5 +78,36 @@ class RabbitsChallenge extends FlameGame
         player.horizontalMovement = 0;
         break;
     }
+  }
+
+
+//Functions that control the level system, add loading screens and control access by the
+//home buttons and between levels, on a loading/continue screen
+
+  void loadNextLevel() {
+    if (currentLevelIndex < levelNames.length - 1) {
+      currentLevelIndex++;
+      _loadLevel();
+    } else {
+      //no more levels, go to home screen
+    }
+  }
+
+  void _loadLevel() {
+    Future.delayed(const Duration(seconds: 1), () { //TODO: on this delay, add a loading screen
+      Level world = Level(
+        player: player,
+        levelName: levelNames[currentLevelIndex],
+      );
+
+      cam = CameraComponent.withFixedResolution(
+        world: world,
+        width: 480,
+        height: 864,
+      );
+      cam.viewfinder.anchor = Anchor.topLeft;
+
+      addAll([cam, world]);
+    });
   }
 }

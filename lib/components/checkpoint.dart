@@ -42,7 +42,9 @@ class Checkpoint extends SpriteAnimationComponent
     super.onCollision(intersectionPoints, other);
   }
 
-//TODO: clean this code using methods since its the same as above
+//TODO: clean this code using methods since its the same as above,
+// and see if there is a callback function to end animations on Flame
+  
   void _reachedCheckpoint() {
     reachedCheckpoint = true;
     animation = animation = SpriteAnimation.fromFrameData(
@@ -54,6 +56,22 @@ class Checkpoint extends SpriteAnimationComponent
         textureSize: Vector2.all(64),
         loop: false,
       ),
+    );
+
+    const flagDuration = Duration(milliseconds: 1300);
+    Future.delayed(
+      flagDuration,
+      () {
+        animation = animation = SpriteAnimation.fromFrameData(
+          game.images.fromCache(
+              'Items/Checkpoints/Checkpoint/Checkpoint (Flag Idle)(64x64).png'),
+          SpriteAnimationData.sequenced(
+            amount: 10,
+            stepTime: 0.05,
+            textureSize: Vector2.all(64),
+          ),
+        );
+      },
     );
   }
 }

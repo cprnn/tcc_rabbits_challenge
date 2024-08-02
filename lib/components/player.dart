@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
+import 'package:tcc_rabbits_challenge/components/checkpoint.dart';
 import 'package:tcc_rabbits_challenge/components/collision_block.dart';
 import 'package:tcc_rabbits_challenge/components/custom_hitbox.dart';
 import 'package:tcc_rabbits_challenge/components/fruit.dart';
@@ -19,6 +21,7 @@ enum PlayerState {
   wallJumping,
   hit,
   appearing,
+  disappearing,
 }
 
 class Player extends SpriteAnimationGroupComponent
@@ -27,7 +30,10 @@ class Player extends SpriteAnimationGroupComponent
   String character;
   //constructor
   // ignore: use_super_parameters
-  Player({super.position, this.character = 'Ninja Frog'}); //super extends the SpriteAnimationGroupComponent
+  Player(
+      {super.position,
+      this.character =
+          'Ninja Frog'}); //super extends the SpriteAnimationGroupComponent
 
   late final SpriteAnimation idleAnimation;
   late final SpriteAnimation runningAnimation;
@@ -37,6 +43,7 @@ class Player extends SpriteAnimationGroupComponent
   late final SpriteAnimation wallJumpAnimation;
   late final SpriteAnimation hitAnimation;
   late final SpriteAnimation appearingAnimation;
+  late final SpriteAnimation disappearingAnimation;
 
 //Frame animation time
   final double stepTime = 0.05;
@@ -55,6 +62,7 @@ class Player extends SpriteAnimationGroupComponent
   bool isOnGround = false;
   bool hasJumped = false;
   bool gotHit = false;
+  bool reachedCheckpoint = false;
 
 //Player's starting spawpoint
   Vector2 startingPosition = Vector2.zero();
@@ -85,7 +93,7 @@ class Player extends SpriteAnimationGroupComponent
   void update(double dt) {
     //dt: delta time
 
-    if (!gotHit) {
+    if (!gotHit && !reachedCheckpoint) {
       _updatePlayerState();
       _updatePlayerPosition(dt);
 
@@ -117,11 +125,12 @@ class Player extends SpriteAnimationGroupComponent
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-    if (other is Fruit) other.collidedWithPlayer();
+    if (!reachedCheckpoint) {
+      if (other is Fruit) other.collidedWithPlayer();
+      if (other is Saw) _respawn();
+      if (other is Checkpoint) _reachedCheckpoint();
+    }
     super.onCollision(intersectionPoints, other);
-
-    if (other is Saw) _respawn();
-
     //TODO: add a sound effect when fruit is collected
     //TODO: add score increase or reward when fruit is collected
   }
@@ -135,6 +144,7 @@ class Player extends SpriteAnimationGroupComponent
     jumpingAnimation = _spriteAnimation('Jump', 1);
     hitAnimation = _spriteAnimation('Hit', 7);
     appearingAnimation = _specialSpriteAnimation('Appearing', 7);
+    disappearingAnimation = _specialSpriteAnimation('Disappearing', 7);
 
     // idleAnimation = _spriteAnimation('Idle', 4); //add more frames to bunny on image
     // runningAnimation = _spriteAnimation('Run', 4); //add more frames to bunny on image
@@ -151,6 +161,7 @@ class Player extends SpriteAnimationGroupComponent
       //PlayerState.wallJumping: wallJumpAnimation,
       PlayerState.hit: hitAnimation,
       PlayerState.appearing: appearingAnimation,
+      PlayerState.disappearing: disappearingAnimation,
     };
 
 //set current animation
@@ -296,5 +307,29 @@ class Player extends SpriteAnimationGroupComponent
         Future.delayed(canMoveDuration, () => gotHit = false);
       });
     });
+  }
+
+  void _reachedCheckpoint() {
+    reachedCheckpoint = true;
+    if (scale.x > 0) {
+      position = position - Vector2.all(32);
+    } else if (scale.x < 0) {
+      position = position + Vector2(32, -32);
+    }
+    current = PlayerState.disappearing;
+
+    const reachedCheckpointDuration = Duration(milliseconds: 350);
+    Future.delayed(
+      reachedCheckpointDuration,
+      () {
+        reachedCheckpoint = false;
+        position = Vector2.all(-640);
+
+        const waitToChangeLevelDuration = Duration(seconds: 3);
+        Future.delayed(waitToChangeLevelDuration, () {
+          game.loadNextLevel();
+        });
+      },
+    );
   }
 }
