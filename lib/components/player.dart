@@ -123,16 +123,18 @@ class Player extends SpriteAnimationGroupComponent
     return super.onKeyEvent(event, keysPressed);
   }
 
+  //TODO: add a sound effect when fruit is collected
+  //TODO: add score increase or reward when fruit is collected
+
   @override
-  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+  void onCollisionStart(
+      Set<Vector2> intersectionPoints, PositionComponent other) {
     if (!reachedCheckpoint) {
       if (other is Fruit) other.collidedWithPlayer();
       if (other is Saw) _respawn();
       if (other is Checkpoint) _reachedCheckpoint();
+      super.onCollisionStart(intersectionPoints, other);
     }
-    super.onCollision(intersectionPoints, other);
-    //TODO: add a sound effect when fruit is collected
-    //TODO: add score increase or reward when fruit is collected
   }
 
 //TODO: change the image to the bunny animation
@@ -142,7 +144,7 @@ class Player extends SpriteAnimationGroupComponent
     runningAnimation = _spriteAnimation('Run', 12);
     fallingAnimation = _spriteAnimation('Fall', 1);
     jumpingAnimation = _spriteAnimation('Jump', 1);
-    hitAnimation = _spriteAnimation('Hit', 7);
+    hitAnimation = _spriteAnimation('Hit', 7)..loop = false; //cascade operator, read more about it
     appearingAnimation = _specialSpriteAnimation('Appearing', 7);
     disappearingAnimation = _specialSpriteAnimation('Disappearing', 7);
 
@@ -189,6 +191,7 @@ class Player extends SpriteAnimationGroupComponent
         amount: amount,
         stepTime: 0.05,
         textureSize: Vector2.all(96),
+        loop: false,
       ),
     );
   }
@@ -288,25 +291,26 @@ class Player extends SpriteAnimationGroupComponent
     }
   }
 
-  void _respawn() {
-    const hitDuration =
-        Duration(milliseconds: 250); //50 milliseconds per frame, 7 frames
-    const appearingDuration = Duration(milliseconds: 250);
+  void _respawn() async {
     const canMoveDuration = Duration(milliseconds: 50);
     gotHit = true;
     current = PlayerState.hit;
 
-    Future.delayed(hitDuration, () {
-      scale.x = 1;
-      position = startingPosition - Vector2.all(32);
-      current = PlayerState.appearing;
-      Future.delayed(appearingDuration, () {
-        velocity = Vector2.zero();
-        position = startingPosition;
-        _updatePlayerState();
-        Future.delayed(canMoveDuration, () => gotHit = false);
-      });
-    });
+    await animationTicker?.completed; //used to check if the animation finished
+    animationTicker?.reset();
+
+    scale.x = 1;
+    position = startingPosition - Vector2.all(32);
+    current = PlayerState.appearing;
+
+    await animationTicker?.completed;
+    animationTicker?.reset();
+
+    velocity = Vector2.zero();
+    position = startingPosition;
+    _updatePlayerState();
+    Future.delayed(canMoveDuration, () => gotHit = false);
+  
   }
 
   void _reachedCheckpoint() {
