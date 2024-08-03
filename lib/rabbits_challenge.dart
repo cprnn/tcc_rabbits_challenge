@@ -10,10 +10,12 @@ import 'package:tcc_rabbits_challenge/components/level.dart';
 class RabbitsChallenge extends FlameGame
     with HasKeyboardHandlerComponents, DragCallbacks, HasCollisionDetection {
   //TODO: change to blockly handler
+ 
+ 
   @override
   Color backgroundColor() => const Color(0xFF211F30);
   late CameraComponent cam;
-  Player player = Player(character: 'Mask Dude');
+  Player player = Player(character: 'Caramel');
   late JoystickComponent joystick;
   bool showJoystick = false;
   List<String> levelNames = [

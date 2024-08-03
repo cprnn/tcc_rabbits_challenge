@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:tcc_rabbits_challenge/components/checkpoint.dart';
 import 'package:tcc_rabbits_challenge/components/collision_block.dart';
 import 'package:tcc_rabbits_challenge/components/custom_hitbox.dart';
@@ -144,7 +143,7 @@ class Player extends SpriteAnimationGroupComponent
     runningAnimation = _spriteAnimation('Run', 12);
     fallingAnimation = _spriteAnimation('Fall', 1);
     jumpingAnimation = _spriteAnimation('Jump', 1);
-    hitAnimation = _spriteAnimation('Hit', 7)..loop = false; //cascade operator, read more about it
+    hitAnimation = _spriteAnimation('Hit', 6)..loop = false; //cascade operator, read more about it
     appearingAnimation = _specialSpriteAnimation('Appearing', 7);
     disappearingAnimation = _specialSpriteAnimation('Disappearing', 7);
 
