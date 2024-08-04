@@ -15,7 +15,7 @@ class RabbitsChallenge extends FlameGame
   @override
   Color backgroundColor() => const Color(0xFF211F30);
   late CameraComponent cam;
-  Player player = Player(character: 'Caramel');
+  Player player = Player(character: 'Smoke');
   late JoystickComponent joystick;
   bool showJoystick = false;
   bool playSounds = false; //TODO: turn it off when coding if debugging in Windows
