@@ -12,8 +12,10 @@ Projeto da interface do aplicativo está sendo desenvolvida em FlutterFlow, e se
 
 ## Pendências no momento:
 
-✅ Finalização do jogo base conforme tutorial;
-✅ Substituição dos personagens pelas animações específicas do jogo;
-⬜ Substituição do código e controle por teclado e joystick pela integração com o Blockly;
-⬜ Integração do jogo com o aplicativo desenvolvido em FlutterFlow;
-⬜ Integração das telas do aplicativo com Firebase para armazenamento de dados;
+<ul>
+<li>✅ Finalização do jogo base conforme tutorial</li>
+<li>✅ Substituição dos personagens pelas animações específicas do jogo</li>
+<li>⬜ Substituição do código e controle por teclado e joystick pela integração com o Blockly</li>
+<li>⬜ Integração do jogo com o aplicativo desenvolvido em FlutterFlow</li>
+<li>⬜ Integração das telas do aplicativo com Firebase para armazenamento de dados</li>
+</ul>
