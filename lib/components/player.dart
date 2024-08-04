@@ -33,7 +33,7 @@ class Player extends SpriteAnimationGroupComponent
   Player(
       {super.position,
       this.character =
-          'Ninja Frog'}); //super extends the SpriteAnimationGroupComponent
+          'Snow'}); //super extends the SpriteAnimationGroupComponent
 
   late final SpriteAnimation idleAnimation;
   late final SpriteAnimation runningAnimation;
