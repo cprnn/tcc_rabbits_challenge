@@ -18,6 +18,8 @@ class RabbitsChallenge extends FlameGame
   Player player = Player(character: 'Caramel');
   late JoystickComponent joystick;
   bool showJoystick = false;
+  bool playSounds = true; //turn it off when coding if debugging in Windows
+  double soundVolume = 1.0;
   List<String> levelNames = [
     'Level-02',
     'Level-02', //TODO: add here all the levels
@@ -91,7 +93,9 @@ class RabbitsChallenge extends FlameGame
       currentLevelIndex++;
       _loadLevel();
     } else {
-      //no more levels, go to home screen
+      //no more levels TODO: make it go to home screen, not the first level
+      currentLevelIndex = 0;
+      _loadLevel();
     }
   }
 

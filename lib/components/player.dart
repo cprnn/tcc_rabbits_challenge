@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/services.dart';
 import 'package:tcc_rabbits_challenge/components/checkpoint.dart';
 import 'package:tcc_rabbits_challenge/components/collision_block.dart';
@@ -143,7 +144,8 @@ class Player extends SpriteAnimationGroupComponent
     runningAnimation = _spriteAnimation('Run', 12);
     fallingAnimation = _spriteAnimation('Fall', 1);
     jumpingAnimation = _spriteAnimation('Jump', 1);
-    hitAnimation = _spriteAnimation('Hit', 6)..loop = false; //cascade operator, read more about it
+    hitAnimation = _spriteAnimation('Hit', 6)
+      ..loop = false; //cascade operator, read more about it
     appearingAnimation = _specialSpriteAnimation('Appearing', 7);
     disappearingAnimation = _specialSpriteAnimation('Disappearing', 7);
 
@@ -225,6 +227,7 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   void _playerJump(double dt) {
+    if (game.playSounds) FlameAudio.play('jump.wav', volume: game.soundVolume);
     velocity.y = -_jumpForce;
     position.y += velocity.y * dt;
     isOnGround = false;
@@ -291,6 +294,7 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   void _respawn() async {
+    if (game.playSounds) FlameAudio.play('hit.wav', volume: game.soundVolume);
     const canMoveDuration = Duration(milliseconds: 50);
     gotHit = true;
     current = PlayerState.hit;
@@ -309,30 +313,28 @@ class Player extends SpriteAnimationGroupComponent
     position = startingPosition;
     _updatePlayerState();
     Future.delayed(canMoveDuration, () => gotHit = false);
-  
   }
 
-  void _reachedCheckpoint() {
+  void _reachedCheckpoint() async {
+    if (game.playSounds) {
+      FlameAudio.play('disappear.wav', volume: game.soundVolume);
+    }
     reachedCheckpoint = true;
     if (scale.x > 0) {
       position = position - Vector2.all(32);
     } else if (scale.x < 0) {
       position = position + Vector2(32, -32);
     }
+
     current = PlayerState.disappearing;
 
-    const reachedCheckpointDuration = Duration(milliseconds: 350);
-    Future.delayed(
-      reachedCheckpointDuration,
-      () {
-        reachedCheckpoint = false;
-        position = Vector2.all(-640);
+    await animationTicker?.completed;
+    animationTicker?.reset();
 
-        const waitToChangeLevelDuration = Duration(seconds: 3);
-        Future.delayed(waitToChangeLevelDuration, () {
-          game.loadNextLevel();
-        });
-      },
-    );
+    reachedCheckpoint = false;
+    position = Vector2.all(-640);
+
+    const waitToChangeLevelDuration = Duration(seconds: 3);
+    Future.delayed(waitToChangeLevelDuration, () => game.loadNextLevel());
   }
 }
