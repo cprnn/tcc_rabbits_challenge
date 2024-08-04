@@ -18,7 +18,7 @@ class RabbitsChallenge extends FlameGame
   Player player = Player(character: 'Caramel');
   late JoystickComponent joystick;
   bool showJoystick = false;
-  bool playSounds = true; //turn it off when coding if debugging in Windows
+  bool playSounds = false; //TODO: turn it off when coding if debugging in Windows
   double soundVolume = 1.0;
   List<String> levelNames = [
     'Level-02',

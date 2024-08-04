@@ -73,13 +73,13 @@ flutter:
    - assets/images/Items/Fruits/
    - assets/images/Items/Checkpoints/Checkpoint/
    - assets/images/Main Characters/
-   - assets/images/Main Characters/Mask Dude/
+   - assets/images/Main Characters/Caramel/
+   - assets/images/Main Characters/Snow/
+
+   - assets/images/Main Characters/Mask Dude/ #remove the unnecessary characters before lauching
    - assets/images/Main Characters/Ninja Frog/
    - assets/images/Main Characters/Pink Man/
    - assets/images/Main Characters/Virtual Guy/
-   - assets/images/Main Characters/Caramel/
-   - assets/images/Main Characters/Snow/
-   - assets/images/Main Characters/Spots/
    - assets/images/Traps/Saw/
 
   #   - images/a_dot_burr.jpeg
