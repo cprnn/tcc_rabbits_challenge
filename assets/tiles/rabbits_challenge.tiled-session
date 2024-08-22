@@ -15,10 +15,10 @@
                 5
             ],
             "scale": 1.5,
-            "selectedLayer": 4,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 263,
-                "y": 430.3333333333333
+                "x": 264,
+                "y": 431.66666666666663
             }
         },
         "Level-02.tmx": {
@@ -27,10 +27,10 @@
                 5
             ],
             "scale": 3,
-            "selectedLayer": 4,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 201.16666666666669,
-                "y": 385.5
+                "x": 152.83333333333331,
+                "y": 680.5
             }
         },
         "Level-03.tmx": {
@@ -38,35 +38,35 @@
                 2,
                 5
             ],
-            "scale": 0.75,
-            "selectedLayer": 4,
+            "scale": 1,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 239.33333333333326,
-                "y": 431.33333333333337
+                "x": 240,
+                "y": 431.5
             }
         },
         "Level-04.tmx": {
             "expandedObjectLayers": [
-                4,
-                5
+                5,
+                4
             ],
             "scale": 1,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 239.5,
-                "y": 430.5
+                "x": 238.5,
+                "y": 429.5
             }
         },
         "Level-05.tmx": {
             "expandedObjectLayers": [
-                4,
-                5
+                5,
+                4
             ],
             "scale": 1,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 366.5,
-                "y": 245.5
+                "x": 365.5,
+                "y": 244.5
             }
         },
         "RabbitsChallenge.tsx": {
@@ -83,8 +83,6 @@
         "Level-01.tmx",
         "Level-02.tmx",
         "Level-03.tmx",
-        "Level-04.tmx",
-        "Level-05.tmx",
         "RabbitsChallenge.tsx"
     ],
     "project": "rabbits_challenge.tiled-project",
@@ -92,10 +90,10 @@
     "recentFiles": [
         "Level-01.tmx",
         "RabbitsChallenge.tsx",
-        "Level-05.tmx",
-        "Level-04.tmx",
         "Level-03.tmx",
-        "Level-02.tmx"
+        "Level-02.tmx",
+        "Level-05.tmx",
+        "Level-04.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {

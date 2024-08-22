@@ -199,7 +199,7 @@
     <property name="offPos" type="float" value="4"/>
    </properties>
   </object>
-  <object id="37" type="Checkpoint" x="368.333" y="416.667" width="63" height="63.3333"/>
+  <object id="37" name="Checkpoint" type="Checkpoint" x="368.333" y="416.667" width="63" height="63.3333"/>
  </objectgroup>
  <objectgroup id="5" name="Collisions">
   <object id="7" type="Wall" x="32" y="32" width="15.3333" height="494"/>

@@ -21,7 +21,8 @@ class RabbitsChallenge extends FlameGame
   bool playSounds = false; //TODO: turn it off when coding if debugging in Windows
   double soundVolume = 1.0;
   List<String> levelNames = [
-    'Level-02',
+    'Level-01',
+    'Level-03',
     'Level-02', //TODO: add here all the levels
   ];
   int currentLevelIndex = 0;
