@@ -82,6 +82,27 @@ Blockly.Blocks['set_direction'] = {
   }
 };
 
+Blockly.Blocks['jump'] = {
+  init: function () {
+    this.jsonInit({
+      "type": "jump",
+      "tooltip": "",
+      "helpUrl": "",
+      "message0": "pule %1",
+      "args0": [
+        {
+          "type": "input_dummy",
+          "name": "jump"
+        }
+      ],
+      "previousStatement": null,
+      "nextStatement": null,
+      "colour": 165
+    }
+    );
+  }
+};
+
 
 // Gerador de código para o bloco 'movement'
 //javascriptGenerator['movement'] = function(block) {

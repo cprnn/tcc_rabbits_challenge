@@ -168,6 +168,13 @@ const Map<String, dynamic> initialToolboxJson = {
             </block>
             '''
         },
+        {
+          'kind': 'block',
+          'blockxml': '''
+            <block type="jump">
+            </block>
+            '''
+        },
       ]
     },
   ],
