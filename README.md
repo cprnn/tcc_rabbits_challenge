@@ -1,6 +1,6 @@
 # Trabalho de Conclusão de Curso - Rabbit's Challenge!
 
-- PT-BR:
+PT-BR:
 ## Feito com ❤️ com Flutter, Flame e Blockly!
 
 Obrigado especial ao Spelltorn pelo tutorial para desenvolver jogos 2D com Flutter. O passo a passo com explicações completas pode ser visto [aqui](https://youtube.com/playlist?list=PLRRATgFqhVCh8qD7xmaSbwG1vfaCddvCM&si=adnKajhjttysi_TZ).
@@ -17,8 +17,10 @@ Este projeto será um jogo educativo para ensino de conceitos básicos de lógic
 <li>⬜ Substituição do código e controle por teclado e joystick pela integração com o Blockly</li>
 <li>⬜ Integração das telas do aplicativo com Firebase para armazenamento de dados</li>
 </ul>
+<br>
+<br>
 
-- EN:
+EN:
 ## Made with ❤️ using Flutter, Flame and Blockly!
 
 Special thanks to Spelltorn for the tutorial on developing 2D games with Flutter. The step-by-step with full explanations can be seen [here](https://youtube.com/playlist?list=PLRRATgFqhVCh8qD7xmaSbwG1vfaCddvCM&si=adnKajhjttysi_TZ).
