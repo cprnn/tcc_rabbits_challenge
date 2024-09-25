@@ -1,8 +1,8 @@
 import 'dart:async';
+import 'dart:html' as html;
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame_audio/flame_audio.dart';
-import 'package:flutter/services.dart';
 import 'package:tcc_rabbits_challenge/components/checkpoint.dart';
 import 'package:tcc_rabbits_challenge/components/collision_block.dart';
 import 'package:tcc_rabbits_challenge/components/custom_hitbox.dart';
@@ -57,6 +57,8 @@ class Player extends SpriteAnimationGroupComponent
   double horizontalMovement = 0;
   double moveSpeed = 100;
   Vector2 velocity = Vector2.zero();
+  double moveDistance =
+      32.0; //Exactly the width of the widget of the block painted as the ground in Tiled - 32 pixels
 
 //Checks collisions and if jumped
   bool isOnGround = false;
@@ -79,13 +81,25 @@ class Player extends SpriteAnimationGroupComponent
   @override
   FutureOr<void> onLoad() {
     _loadAllAnimations();
-
     startingPosition = Vector2(position.x, position.y);
     //debugMode = true; //TODO: do not forget to remove this and see if its possible to change to the native hitbox component
     add(RectangleHitbox(
       position: Vector2(hitbox.offsetX, hitbox.offsetY),
       size: Vector2(hitbox.width, hitbox.height),
     ));
+
+    html.window.onMessage.listen((event) {
+      if (event.data['action'] == 'move_player') {
+        if (event.data['direction'] == 'left') {
+          _movePlayer(-moveDistance);
+        } else if (event.data['direction'] == 'right') {
+          _movePlayer(moveDistance);
+        }
+      } else if (event.data['action'] == 'jump') {
+        hasJumped = true;
+      }
+    });
+
     return super.onLoad();
   }
 
@@ -105,8 +119,13 @@ class Player extends SpriteAnimationGroupComponent
     super.update(dt);
   }
 
-//player movement -> TODO: change this to react with Blockly commands
-  @override
+//player movement - moves the player for only 32 pixels
+  void _movePlayer(double distance) {
+    position.x += moveDistance;
+  }
+
+//TODO: remove this funtion
+/*  @override
   bool onKeyEvent(KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
     horizontalMovement = 0;
 
@@ -122,8 +141,7 @@ class Player extends SpriteAnimationGroupComponent
 
     return super.onKeyEvent(event, keysPressed);
   }
-
-  //TODO: add a sound effect when fruit is collected
+*/
   //TODO: add score increase or reward when fruit is collected
 
   @override

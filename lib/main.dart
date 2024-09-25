@@ -7,11 +7,18 @@ import 'package:tcc_rabbits_challenge/rabbits_challenge.dart';
 import 'dart:js'; //change this to something that is multi-platform
 import 'package:flutter_blockly/flutter_blockly.dart';
 
+// Função para compilar e executar o código gerado pelo Blockly
+void _compileAndRunBlockly() {
+  final blocklyCode =
+      context['Blockly']['JavaScript'].callMethod('workspaceToCode');
+  print(blocklyCode()); // Para verificar o código gerado no console
+  context.callMethod('eval', [blocklyCode()]);
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Flame.device.fullScreen();
   await Flame.device.setLandscape();
-
 
 //to see if flutter is running JS
   var object = JsObject(context['Object']);
@@ -22,7 +29,8 @@ void main() async {
 
   RabbitsChallenge game = RabbitsChallenge();
 
-  String customBlocks = await rootBundle.loadString('assets/js/custom_blocks.js');
+  String customBlocks =
+      await rootBundle.loadString('assets/js/custom_blocks.js');
 
   runApp(
     MaterialApp(
@@ -32,6 +40,12 @@ void main() async {
             SizedBox(
               width: 480, // Define a largura do jogo
               child: GameWidget(game: game),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _compileAndRunBlockly();
+              },
+              child: const Text("Compilar e Executar Código"),
             ),
             Expanded(
               child: Container(

@@ -17,32 +17,32 @@
             "scale": 1.5,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 264,
-                "y": 431.66666666666663
+                "x": 177.66666666666663,
+                "y": 345.6666666666667
             }
         },
         "Level-02.tmx": {
             "expandedObjectLayers": [
-                2,
-                5
+                5,
+                2
             ],
-            "scale": 3,
-            "selectedLayer": 0,
+            "scale": 2,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 152.83333333333331,
-                "y": 680.5
+                "x": 250.25,
+                "y": 176.25
             }
         },
         "Level-03.tmx": {
             "expandedObjectLayers": [
-                2,
-                5
+                5,
+                2
             ],
             "scale": 1,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 240,
-                "y": 431.5
+                "x": 239.5,
+                "y": 429.5
             }
         },
         "Level-04.tmx": {
