@@ -1,36 +1,101 @@
+import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/services.dart';
-import 'package:tcc_rabbits_challenge/blockly.dart';
-import 'package:tcc_rabbits_challenge/rabbits_challenge.dart';
-import 'dart:js'; //change this to something that is multi-platform
 import 'package:flutter_blockly/flutter_blockly.dart';
+import 'package:tcc_rabbits_challenge/content.dart';
+import 'package:tcc_rabbits_challenge/rabbits_challenge.dart';
+import 'dart:js';
 
-// Função para compilar e executar o código gerado pelo Blockly
 void _compileAndRunBlockly() {
-  final blocklyCode =
-      context['Blockly']['JavaScript'].callMethod('workspaceToCode');
-  print(blocklyCode()); // Para verificar o código gerado no console
-  context.callMethod('eval', [blocklyCode()]);
+  if (kIsWeb) {
+    // Ensure that getMainWorkspace returns a valid workspace object
+    var workspace = context['Blockly'].callMethod('getMainWorkspace');
+    if (workspace != null) {
+      final codeGenerator = context['Blockly']['JavaScript'];
+      final blocklyCode =
+          codeGenerator.callMethod('workspaceToCode', [workspace]);
+      print('Generated JavaScript code:');
+      print(blocklyCode);
+      try {
+        context.callMethod('eval', [blocklyCode]);
+      } catch (e) {
+        print('Error evaluating JavaScript code:');
+        print(e);
+      }
+    } else {
+      if (kDebugMode) {
+        print('Failed to retrieve main Blockly workspace.');
+      }
+    }
+  } else {
+    if (kDebugMode) {
+      print('JavaScript execution is only available on Flutter Web.');
+    }
+  }
 }
+
+final BlocklyOptions workspaceConfiguration = BlocklyOptions.fromJson(const {
+  'grid': {
+    'spacing': 20,
+    'length': 3,
+    'colour': '#ccc',
+    'snap': true,
+  },
+  'toolbox': initialToolboxJson,
+  // null safety example
+  'collapse': null,
+  'comments': null,
+  'css': null,
+  'disable': null,
+  'horizontalLayout': null,
+  'maxBlocks': null,
+  'maxInstances': null,
+  'media': null,
+  'modalInputs': null,
+  'move': null,
+  'oneBasedIndex': null,
+  'readOnly': null,
+  'renderer': null,
+  'rendererOverrides': null,
+  'rtl': null,
+  'scrollbars': null,
+  'sounds': null,
+  'theme': null,
+  'toolboxPosition': null,
+  'trashcan': null,
+  'maxTrashcanContents': null,
+  'plugins': null,
+  'zoom': null,
+  'parentWorkspace': null,
+});
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Flame.device.fullScreen();
-  await Flame.device.setLandscape();
-
-//to see if flutter is running JS
-  var object = JsObject(context['Object']);
-  object['greeting'] = 'Hello';
-  object['greet'] = (name) => "${object['greeting']} $name";
-  var message = object.callMethod('greet', ['JavaScript']);
-  context['console'].callMethod('log', [message]);
 
   RabbitsChallenge game = RabbitsChallenge();
 
   String customBlocks =
-      await rootBundle.loadString('assets/js/custom_blocks.js');
+      await rootBundle.loadString('../assets/js/custom_blocks.js');
+
+  void onInject(BlocklyData data) {
+    debugPrint('onInject: ${data.xml}\n${jsonEncode(data.json)}');
+  }
+
+  void onChange(BlocklyData data) {
+    debugPrint('onChange: ${data.xml}\n${jsonEncode(data.json)}\n${data.dart}');
+  }
+
+  void onDispose(BlocklyData data) {
+    debugPrint('onDispose: ${data.xml}\n${jsonEncode(data.json)}');
+  }
+
+  void onError(dynamic err) {
+    debugPrint('onError: $err');
+  }
 
   runApp(
     MaterialApp(
@@ -38,14 +103,12 @@ void main() async {
         body: Row(
           children: [
             SizedBox(
-              width: 480, // Define a largura do jogo
+              width: 480, // Largura do jogo
               child: GameWidget(game: game),
             ),
-            ElevatedButton(
-              onPressed: () {
-                _compileAndRunBlockly();
-              },
-              child: const Text("Compilar e Executar Código"),
+            const ElevatedButton(
+              onPressed: _compileAndRunBlockly,
+              child: Text("Compilar e Executar Código"),
             ),
             Expanded(
               child: Container(
@@ -57,28 +120,14 @@ void main() async {
                       child: BlocklyEditorWidget(
                         workspaceConfiguration: workspaceConfiguration,
                         initial: null,
-                        /*onInject: (data) {
-                          if (kDebugMode) {
-                            print("Editor Injected");
-                          }
-                        },
-                        onChange: (data) {
-                          if (kDebugMode) {
-                            print("Editor Changed");
-                          }
-                        },
-                        onDispose: (data) {
-                          if (kDebugMode) {
-                            print("Editor Disposed");
-                          }
-                        },
-                        onError: (error) {
-                          if (kDebugMode) {
-                            print("Error: $error");
-                          }
-                        },*/
+                        onInject: onInject,
+                        onChange: onChange,
+                        onDispose: onDispose,
+                        onError: onError,
                         style: null,
-                        script: customBlocks,
+                        script: '''
+                          alert('start blockly ' + Blockly);
+                          $customBlocks''',
                         editor: null,
                         packages: null,
                       ),

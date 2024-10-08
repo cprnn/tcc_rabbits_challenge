@@ -1,7 +1,9 @@
 import 'package:flutter_blockly/flutter_blockly.dart';
 import 'package:tcc_rabbits_challenge/content.dart';
-import 'dart:js'; //change this to something that is multi-platform
+//change this to something that is multi-platform
 
+
+//not used
 final BlocklyOptions workspaceConfiguration = BlocklyOptions.fromJson(const {
   'grid': {
     'spacing': 20,
