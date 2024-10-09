@@ -122,7 +122,9 @@ Blockly.JavaScript.forBlock['movement_left'] = function (block) {
 
 Blockly.JavaScript.forBlock['set_direction'] = function (block) {
   console.log("aha direction");
-  var code = 'window.parent.postMessage({ action: \'move_player\', direction: \'' + direction + '\' }, \'*\');';
+  var direction = block.getFieldValue('direction_options');
+  console.log(direction);
+  var code = 'window.parent.postMessage({ action: \'change_direction\', direction: \'' + direction + '\' }, \'*\');';
   return code;
 };
 

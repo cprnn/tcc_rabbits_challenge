@@ -126,7 +126,6 @@ void main() async {
                         onError: onError,
                         style: null,
                         script: '''
-                          alert('start blockly ' + Blockly);
                           $customBlocks''',
                         editor: null,
                         packages: null,

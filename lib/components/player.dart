@@ -8,6 +8,7 @@ import 'package:tcc_rabbits_challenge/components/collision_block.dart';
 import 'package:tcc_rabbits_challenge/components/custom_hitbox.dart';
 import 'package:tcc_rabbits_challenge/components/fruit.dart';
 import 'package:tcc_rabbits_challenge/components/saw.dart';
+import 'package:tcc_rabbits_challenge/components/score.dart';
 import 'package:tcc_rabbits_challenge/components/utils.dart';
 import 'package:tcc_rabbits_challenge/rabbits_challenge.dart';
 
@@ -23,6 +24,8 @@ enum PlayerState {
   appearing,
   disappearing,
 }
+
+enum Direction { left, right }
 
 class Player extends SpriteAnimationGroupComponent
     with HasGameRef<RabbitsChallenge>, KeyboardHandler, CollisionCallbacks {
@@ -78,23 +81,36 @@ class Player extends SpriteAnimationGroupComponent
     height: 28,
   );
 
+  Direction _direction = Direction.right;
+
   @override
   FutureOr<void> onLoad() {
     _loadAllAnimations();
+
     startingPosition = Vector2(position.x, position.y);
-    //debugMode = true; //TODO: do not forget to remove this and see if its possible to change to the native hitbox component
     add(RectangleHitbox(
       position: Vector2(hitbox.offsetX, hitbox.offsetY),
       size: Vector2(hitbox.width, hitbox.height),
     ));
 
     html.window.onMessage.listen((event) {
-      if (event.data['action'] == 'move_player') {
+      if (event.data['action'] == 'change_direction') {
         if (event.data['direction'] == 'left') {
-          _movePlayer(-moveDistance);
+          _direction = Direction.left;
         } else if (event.data['direction'] == 'right') {
-          _movePlayer(moveDistance);
+          _direction = Direction.right;
         }
+      } else if (event.data['action'] == 'move_player') {
+        if (event.data['direction'] == 'left') {
+          _direction = Direction.left;
+          velocity.x = -moveSpeed;
+        } else if (event.data['direction'] == 'right') {
+          _direction = Direction.right;
+          velocity.x = moveSpeed;
+        }
+        Future.delayed(const Duration(milliseconds: 100), () {
+          velocity.x = 0;
+        });
       } else if (event.data['action'] == 'jump') {
         hasJumped = true;
       }
@@ -121,41 +137,25 @@ class Player extends SpriteAnimationGroupComponent
 
 //player movement - moves the player for only 32 pixels
   void _movePlayer(double distance) {
-    position.x += moveDistance;
+    position.x += distance;
   }
 
-//TODO: remove this funtion
-/*  @override
-  bool onKeyEvent(KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
-    horizontalMovement = 0;
-
-    final isLeftKeyPressed = keysPressed.contains(LogicalKeyboardKey.keyA) ||
-        keysPressed.contains(LogicalKeyboardKey.arrowLeft);
-    final isRightKeyPressed = keysPressed.contains(LogicalKeyboardKey.keyD) ||
-        keysPressed.contains(LogicalKeyboardKey.arrowRight);
-
-    horizontalMovement += isLeftKeyPressed ? -1 : 0;
-    horizontalMovement += isRightKeyPressed ? 1 : 0;
-
-    hasJumped = keysPressed.contains(LogicalKeyboardKey.space);
-
-    return super.onKeyEvent(event, keysPressed);
-  }
-*/
-  //TODO: add score increase or reward when fruit is collected
+  Score score = Score();
 
   @override
   void onCollisionStart(
       Set<Vector2> intersectionPoints, PositionComponent other) {
     if (!reachedCheckpoint) {
-      if (other is Fruit) other.collidedWithPlayer();
+      if (other is Fruit) {
+        other.collidedWithPlayer();
+        score.incrementFruitsCollected();
+      }
       if (other is Saw) _respawn();
       if (other is Checkpoint) _reachedCheckpoint();
       super.onCollisionStart(intersectionPoints, other);
     }
   }
 
-//TODO: change the image to the bunny animation
   void _loadAllAnimations() {
     //TODO: make this more dynamic after removing the hard coded path on _spriteAnimation
     idleAnimation = _spriteAnimation('Idle', 11);
@@ -218,9 +218,9 @@ class Player extends SpriteAnimationGroupComponent
   void _updatePlayerState() {
     PlayerState playerState = PlayerState.idle;
 
-    if (velocity.x < 0 && scale.x > 0) {
+    if (_direction == Direction.left && scale.x > 0) {
       flipHorizontallyAroundCenter();
-    } else if (velocity.x > 0 && scale.x < 0) {
+    } else if (_direction == Direction.right && scale.x < 0) {
       flipHorizontallyAroundCenter();
     }
     //if player is falling
@@ -238,11 +238,30 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   void _updatePlayerPosition(double dt) {
-    if (hasJumped && isOnGround) _playerJump(dt);
-
-    velocity.x = horizontalMovement * moveSpeed;
-    position.x += velocity.x * dt;
+    if (!gotHit && !reachedCheckpoint) {
+      if (velocity.x != 0) {
+        position.x += velocity.x * dt;
+      }
+      if (hasJumped) {
+        _playerJump(dt);
+        hasJumped = false;
+      }
+    }
   }
+
+/*  void _updatePlayerPosition(double dt) {
+    if (!gotHit && !reachedCheckpoint) {
+      horizontalMovement = 0;
+      if (_direction == Direction.left) {
+        horizontalMovement = -moveSpeed;
+      } else if (_direction == Direction.right) {
+        horizontalMovement = moveSpeed;
+      }
+      velocity.x = horizontalMovement;
+      position.x += velocity.x * dt;
+    }
+  }
+*/
 
   void _playerJump(double dt) {
     if (game.playSounds) FlameAudio.play('jump.wav', volume: game.soundVolume);
