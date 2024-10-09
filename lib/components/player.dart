@@ -61,7 +61,7 @@ class Player extends SpriteAnimationGroupComponent
   double moveSpeed = 100;
   Vector2 velocity = Vector2.zero();
   double moveDistance =
-      32.0; //Exactly the width of the widget of the block painted as the ground in Tiled - 32 pixels
+      16.0; //Exactly the width of the widget of the block painted as the ground in Tiled - 32 pixels
 
 //Checks collisions and if jumped
   bool isOnGround = false;
@@ -103,14 +103,11 @@ class Player extends SpriteAnimationGroupComponent
       } else if (event.data['action'] == 'move_player') {
         if (event.data['direction'] == 'left') {
           _direction = Direction.left;
-          velocity.x = -moveSpeed;
+          _movePlayerOverTime(-1);
         } else if (event.data['direction'] == 'right') {
           _direction = Direction.right;
-          velocity.x = moveSpeed;
+          _movePlayerOverTime(1);
         }
-        Future.delayed(const Duration(milliseconds: 100), () {
-          velocity.x = 0;
-        });
       } else if (event.data['action'] == 'jump') {
         hasJumped = true;
       }
@@ -138,6 +135,20 @@ class Player extends SpriteAnimationGroupComponent
 //player movement - moves the player for only 32 pixels
   void _movePlayer(double distance) {
     position.x += distance;
+  }
+
+  void _movePlayerOverTime(double direction) {
+    double stepTime =
+        0.01; // adjust this value to control the smoothness of the movement
+    int steps = (moveDistance / moveSpeed / stepTime).toInt();
+    double stepDistance = moveDistance / steps;
+
+    for (int i = 0; i < steps; i++) {
+      _movePlayer(stepDistance * direction);
+      Future.delayed(Duration(milliseconds: (stepTime * 1000).toInt()));
+    }
+    // Ensure the player is moved exactly _moveDistance pixels
+    position.x = (position.x + direction * moveDistance).roundToDouble();
   }
 
   Score score = Score();
