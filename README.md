@@ -14,7 +14,8 @@ Este projeto será um jogo educativo para ensino de conceitos básicos de lógic
 <ul>
 <li>✅ Finalização do jogo base conforme tutorial</li>
 <li>✅ Substituição dos personagens pelas animações específicas do jogo</li>
-<li>⬜ Substituição do código e controle por teclado e joystick pela integração com o Blockly</li>
+<li>✅ Substituição do código e controle por teclado e joystick pela integração com o Blockly</li>
+<li>⬜ Integração das telas do aplicativo FlutterFlow com o código-fonte do jogo</li>
 <li>⬜ Integração das telas do aplicativo com Firebase para armazenamento de dados</li>
 </ul>
 <br>
@@ -34,6 +35,7 @@ This project will be an educational game for teaching basic logic and programmin
 <ul>
 <li>✅ Completion of the base game according to the tutorial</li>
 <li>✅ Replacing the characters with game-specific animations</li>
-<li>⬜ Replacing the code and keyboard and joystick control with Blockly integration</li>
+<li>✅ Replacing the code and keyboard and joystick control with Blockly integration</li>
+<li>⬜ Integration of the FlutterFlow application screens with the game source code</li>
 <li>⬜ Integration of the application screens with Firebase for data storage</li>
 </ul>
