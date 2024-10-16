@@ -6,11 +6,11 @@ import 'package:flame/game.dart';
 import 'package:flutter/painting.dart';
 import 'package:tcc_rabbits_challenge/components/player.dart';
 import 'package:tcc_rabbits_challenge/components/level.dart';
+import 'package:tcc_rabbits_challenge/components/level.dart';
 import 'dart:js';
 
 class RabbitsChallenge extends FlameGame
     with HasKeyboardHandlerComponents, DragCallbacks, HasCollisionDetection {
-
   @override
   Color backgroundColor() => const Color(0xFF211F30);
   late CameraComponent cam;
@@ -26,12 +26,12 @@ class RabbitsChallenge extends FlameGame
     'Level-02', //TODO: add here all the levels
   ];
   int currentLevelIndex = 0;
+  Level? currentLevel;
 
   @override
   FutureOr<void> onLoad() async {
     //loading all images to cache
-    await images
-        .loadAllImages(); 
+    await images.loadAllImages();
 
     _loadLevel();
 
@@ -104,25 +104,29 @@ class RabbitsChallenge extends FlameGame
 
   void _loadLevel() {
     Future.delayed(const Duration(seconds: 1), () {
-      //TODO: on this delay, add a loading screen
-      Level world = Level(
+      // TODO: on this delay, add a loading screen
+      // Create a new Level instance and assign it to currentLevel
+      currentLevel = Level(
         player: player,
         levelName: levelNames[currentLevelIndex],
       );
 
+      // Create a camera component with fixed resolution
       cam = CameraComponent.withFixedResolution(
-        world: world,
+        world: currentLevel!,
         width: 480,
         height: 864,
       );
       cam.viewfinder.anchor = Anchor.topLeft;
 
-      addAll([cam, world]);
+      // Add the camera and the current level to the game
+      addAll([cam, currentLevel!]);
     });
   }
 
   void clearBlocklyWorkspace() {
     context['Blockly'].callMethod('getMainWorkspace').callMethod('clear');
     player.resetPosition();
+    currentLevel?.resetFruits();
   }
 }

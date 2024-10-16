@@ -64,7 +64,21 @@ class Fruit extends SpriteAnimationComponent
         ),
       );
       await animationTicker?.completed;
-      removeFromParent();
+      //removeFromParent();
+      opacity = 0;
     }
+  }
+
+  void reset() {
+    collected = false;
+    opacity = 1;
+    animation = SpriteAnimation.fromFrameData(
+      game.images.fromCache('Items/Fruits/$fruit.png'),
+      SpriteAnimationData.sequenced(
+        amount: 17,
+        stepTime: stepTime,
+        textureSize: Vector2.all(32),
+      ),
+    );
   }
 }

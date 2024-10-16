@@ -36,7 +36,6 @@ void _compileAndRunBlockly() {
   }
 }
 
-
 final BlocklyOptions workspaceConfiguration = BlocklyOptions.fromJson(const {
   'grid': {
     'spacing': 20,

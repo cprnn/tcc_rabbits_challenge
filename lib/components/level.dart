@@ -15,6 +15,7 @@ class Level extends World with HasGameRef<RabbitsChallenge> {
 
   late TiledComponent level;
   List<CollisionBlock> collisionBlocks = [];
+  final List<Fruit> fruits = [];
 
   @override
   Future<void> onLoad() async {
@@ -61,6 +62,7 @@ class Level extends World with HasGameRef<RabbitsChallenge> {
                 position: Vector2(spawnPoint.x, spawnPoint.y),
                 size: Vector2(spawnPoint.width, spawnPoint.height));
             add(fruit);
+            fruits.add(fruit);
             break;
           case 'Saw':
             final isVertical = spawnPoint.properties.getValue('isVertical');
@@ -112,5 +114,13 @@ class Level extends World with HasGameRef<RabbitsChallenge> {
       }
     }
     player.collisionBlocks = collisionBlocks;
+  }
+
+  void resetFruits () {
+    print("Resetting fruits...");
+    for (var fruit in fruits) {
+      fruit.reset();
+      print("Fruit reset: $fruit");
+    }
   }
 }
