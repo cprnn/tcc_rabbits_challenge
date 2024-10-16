@@ -11,38 +11,38 @@
     "fileStates": {
         "Level-01.tmx": {
             "expandedObjectLayers": [
-                3,
-                5
-            ],
-            "scale": 1.5,
-            "selectedLayer": 3,
-            "viewCenter": {
-                "x": 264,
-                "y": 431.66666666666663
-            }
-        },
-        "Level-02.tmx": {
-            "expandedObjectLayers": [
-                2,
-                5
+                5,
+                3
             ],
             "scale": 1.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 372.3333333333333,
-                "y": 251.66666666666669
+                "x": 263.66666666666663,
+                "y": 683
+            }
+        },
+        "Level-02.tmx": {
+            "expandedObjectLayers": [
+                5,
+                2
+            ],
+            "scale": 1.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 251,
+                "y": 380.33333333333326
             }
         },
         "Level-03.tmx": {
             "expandedObjectLayers": [
-                2,
-                5
+                5,
+                2
             ],
-            "scale": 1,
-            "selectedLayer": 3,
+            "scale": 1.5,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 240,
-                "y": 431.5
+                "x": 239,
+                "y": 261.6666666666667
             }
         },
         "Level-04.tmx": {
