@@ -6,19 +6,19 @@ import 'package:flame/game.dart';
 import 'package:flutter/painting.dart';
 import 'package:tcc_rabbits_challenge/components/player.dart';
 import 'package:tcc_rabbits_challenge/components/level.dart';
+import 'dart:js';
 
 class RabbitsChallenge extends FlameGame
     with HasKeyboardHandlerComponents, DragCallbacks, HasCollisionDetection {
-  //TODO: change to blockly handler
- 
- 
+
   @override
   Color backgroundColor() => const Color(0xFF211F30);
   late CameraComponent cam;
   Player player = Player(character: 'Smoke');
   late JoystickComponent joystick;
   bool showJoystick = false;
-  bool playSounds = false; //TODO: turn it off when coding if debugging in Windows
+  bool playSounds =
+      true; //TODO: turn it off when coding if debugging in Windows
   double soundVolume = 1.0;
   List<String> levelNames = [
     'Level-01',
@@ -31,16 +31,18 @@ class RabbitsChallenge extends FlameGame
   FutureOr<void> onLoad() async {
     //loading all images to cache
     await images
-        .loadAllImages(); // TODO: change this to loadAll and specify wich images load
+        .loadAllImages(); 
 
     _loadLevel();
 
-    if (showJoystick) {
-      addJoystick();
-    }
+    // if (showJoystick) {
+    //    addJoystick();
+    // }
     return super.onLoad();
   }
 
+//joystick
+/*
   @override
   void update(double dt) {
     if (showJoystick) {
@@ -84,7 +86,7 @@ class RabbitsChallenge extends FlameGame
         break;
     }
   }
-
+*/
 
 //Functions that control the level system, add loading screens and control access by the
 //home buttons and between levels, on a loading/continue screen
@@ -101,7 +103,8 @@ class RabbitsChallenge extends FlameGame
   }
 
   void _loadLevel() {
-    Future.delayed(const Duration(seconds: 1), () { //TODO: on this delay, add a loading screen
+    Future.delayed(const Duration(seconds: 1), () {
+      //TODO: on this delay, add a loading screen
       Level world = Level(
         player: player,
         levelName: levelNames[currentLevelIndex],
@@ -116,5 +119,10 @@ class RabbitsChallenge extends FlameGame
 
       addAll([cam, world]);
     });
+  }
+
+  void clearBlocklyWorkspace() {
+    context['Blockly'].callMethod('getMainWorkspace').callMethod('clear');
+    player.resetPosition();
   }
 }

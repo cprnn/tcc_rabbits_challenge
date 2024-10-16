@@ -385,4 +385,8 @@ class Player extends SpriteAnimationGroupComponent
     const waitToChangeLevelDuration = Duration(seconds: 3);
     Future.delayed(waitToChangeLevelDuration, () => game.loadNextLevel());
   }
+
+  void resetPosition() {
+    position = startingPosition;
+  }
 }

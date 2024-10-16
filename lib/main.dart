@@ -11,7 +11,6 @@ import 'dart:js';
 
 void _compileAndRunBlockly() {
   if (kIsWeb) {
-    // Ensure that getMainWorkspace returns a valid workspace object
     var workspace = context['Blockly'].callMethod('getMainWorkspace');
     if (workspace != null) {
       final codeGenerator = context['Blockly']['JavaScript'];
@@ -36,6 +35,7 @@ void _compileAndRunBlockly() {
     }
   }
 }
+
 
 final BlocklyOptions workspaceConfiguration = BlocklyOptions.fromJson(const {
   'grid': {
@@ -109,6 +109,10 @@ void main() async {
             const ElevatedButton(
               onPressed: _compileAndRunBlockly,
               child: Text("Compilar e Executar Código"),
+            ),
+            ElevatedButton(
+              onPressed: game.clearBlocklyWorkspace,
+              child: const Text("Limpar Workspace"),
             ),
             Expanded(
               child: Container(
