@@ -1,11 +1,15 @@
 class Score {
   int fruitsCollected = 0;
 
-  void incrementFruitsCollected(){
+  void incrementFruitsCollected() {
     fruitsCollected++;
   }
 
-  int getFruitsCollected(){
+  int getFruitsCollected() {
     return fruitsCollected;
+  }
+
+  void resetScore() {
+    fruitsCollected = 0;
   }
 }

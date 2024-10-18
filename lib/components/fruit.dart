@@ -4,19 +4,23 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:tcc_rabbits_challenge/components/custom_hitbox.dart';
+import 'package:tcc_rabbits_challenge/components/score.dart';
 import 'package:tcc_rabbits_challenge/rabbits_challenge.dart';
 
 class Fruit extends SpriteAnimationComponent
     with HasGameRef<RabbitsChallenge>, CollisionCallbacks {
   final String fruit;
+  final Score score;
 
   Fruit({
     this.fruit = 'Apple',
+    required this.score,
     super.position,
     super.size,
   });
 
   final double stepTime = 0.05;
+
   final hitbox = CustomHitbox(
     //fruit hitbox
     offsetX: 10,
@@ -51,6 +55,7 @@ class Fruit extends SpriteAnimationComponent
   void collidedWithPlayer() async {
     if (!collected) {
       collected = true;
+      score.incrementFruitsCollected();
       if (game.playSounds) {
         FlameAudio.play('collect_fruit.wav', volume: game.soundVolume);
       }

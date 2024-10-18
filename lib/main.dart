@@ -101,19 +101,31 @@ void main() async {
       home: Scaffold(
         body: Row(
           children: [
-            SizedBox(
-              width: 480, // Largura do jogo
-              child: GameWidget(game: game),
-            ),
-            const ElevatedButton(
-              onPressed: _compileAndRunBlockly,
-              child: Text("Compilar e Executar Código"),
-            ),
-            ElevatedButton(
-              onPressed: game.clearBlocklyWorkspace,
-              child: const Text("Limpar Workspace"),
-            ),
             Expanded(
+              child: Column(
+                children: [
+                  Expanded(
+                    child: GameWidget(game: game),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      const ElevatedButton(
+                        onPressed: _compileAndRunBlockly,
+                        child: Text("Compilar e Executar Código"),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          game.clearBlocklyWorkspace();
+                        },
+                        child: const Text("Limpar Workspace"),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Flexible(
               child: Container(
                 color: const Color(0x253A5633),
                 child: LayoutBuilder(

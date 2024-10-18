@@ -6,7 +6,6 @@ import 'package:flame/game.dart';
 import 'package:flutter/painting.dart';
 import 'package:tcc_rabbits_challenge/components/player.dart';
 import 'package:tcc_rabbits_challenge/components/level.dart';
-import 'package:tcc_rabbits_challenge/components/level.dart';
 import 'dart:js';
 
 class RabbitsChallenge extends FlameGame
@@ -115,7 +114,7 @@ class RabbitsChallenge extends FlameGame
       cam = CameraComponent.withFixedResolution(
         world: currentLevel!,
         width: 480,
-        height: 864,
+        height: 560,
       );
       cam.viewfinder.anchor = Anchor.topLeft;
 

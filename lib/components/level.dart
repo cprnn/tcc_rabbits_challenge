@@ -6,11 +6,14 @@ import 'package:tcc_rabbits_challenge/components/collision_block.dart';
 import 'package:tcc_rabbits_challenge/components/fruit.dart';
 import 'package:tcc_rabbits_challenge/components/player.dart';
 import 'package:tcc_rabbits_challenge/components/saw.dart';
+import 'package:tcc_rabbits_challenge/components/score.dart';
+import 'package:tcc_rabbits_challenge/components/score_display.dart';
 import 'package:tcc_rabbits_challenge/rabbits_challenge.dart';
 
 class Level extends World with HasGameRef<RabbitsChallenge> {
   final String levelName;
   final Player player;
+  final Score score = Score();
   Level({required this.levelName, required this.player});
 
   late TiledComponent level;
@@ -22,6 +25,8 @@ class Level extends World with HasGameRef<RabbitsChallenge> {
     level = await TiledComponent.load('$levelName.tmx', Vector2.all(16));
 
     add(level);
+
+    add(ScoreDisplay(score));
 
     _scrollingBackground();
     _spawningObjects();
@@ -58,6 +63,7 @@ class Level extends World with HasGameRef<RabbitsChallenge> {
             break;
           case 'Fruit':
             final fruit = Fruit(
+                score: score,
                 fruit: spawnPoint.name,
                 position: Vector2(spawnPoint.x, spawnPoint.y),
                 size: Vector2(spawnPoint.width, spawnPoint.height));
@@ -116,11 +122,12 @@ class Level extends World with HasGameRef<RabbitsChallenge> {
     player.collisionBlocks = collisionBlocks;
   }
 
-  void resetFruits () {
-    print("Resetting fruits...");
+  void resetFruits() {
+    //print("Resetting fruits...");
     for (var fruit in fruits) {
       fruit.reset();
-      print("Fruit reset: $fruit");
+     // print("Fruit reset: $fruit");
     }
+    score.resetScore();
   }
 }
