@@ -47,7 +47,7 @@ const Map<String, dynamic> initialToolboxJson = {
           'kind': 'block',
           'type': 'controls_if',
         },
-        {
+       /* {
           'kind': 'block',
           'blockxml':
               '<block type="logic_compare"><field name="OP">EQ</field></block>',
@@ -65,15 +65,15 @@ const Map<String, dynamic> initialToolboxJson = {
           'kind': 'block',
           'blockxml':
               '<block type="logic_boolean"><field name="BOOL">TRUE</field></block>',
-        },
-        {
+        }, */
+        /*{
           'kind': 'block',
           'type': 'logic_null',
-        },
+        }, 
         {
           'kind': 'block',
-          'type': 'logic_ternary',
-        },
+          'type': 'logic_ternary', //add it with different and more difficult levels maybe?
+        },*/
       ],
     },
     {
@@ -93,15 +93,15 @@ const Map<String, dynamic> initialToolboxJson = {
                 </block>
             '''
         },
-        {
+       /* {
           'kind': 'block',
           'blockxml': '''
                 <block type="controls_whileUntil">
                   <field name="MODE">WHILE</field>
                 </block>
             '''
-        },
-        {
+        }, */
+      /*  {
           'kind': 'block',
           'blockxml': '''
             <block type="controls_for">
@@ -123,15 +123,15 @@ const Map<String, dynamic> initialToolboxJson = {
               </value>
             </block>
           '''
-        },
-        {
+        },*/
+        /*{
           'kind': 'block',
           'blockxml': '''
             <block type="controls_forEach">
               <field name="VAR" id="Cg!CSk/ZJo2XQN3=VVrz" variabletype="">j</field>
             </block>
             '''
-        },
+        }, */
         {
           'kind': 'block',
           'blockxml': '''
@@ -142,7 +142,7 @@ const Map<String, dynamic> initialToolboxJson = {
         },
       ],
     },
-        {
+   /*{
       'kind': 'category',
       'name': 'Matemática',
       'colour': 230,
@@ -304,8 +304,8 @@ const Map<String, dynamic> initialToolboxJson = {
           'type': 'math_random_float',
         },
       ],
-    },
-    {
+    },*/
+    /*{
       'kind': 'category',
       'name': 'Texto/Caracteres',
       'colour': 160,
@@ -463,8 +463,8 @@ const Map<String, dynamic> initialToolboxJson = {
             '''
         },
       ],
-    },
-    {
+    }, */
+/*    {
       'kind': 'category',
       'name': 'Listas',
       'colour': 259,
@@ -587,7 +587,7 @@ const Map<String, dynamic> initialToolboxJson = {
             '''
         },
       ],
-    },
+    }, */
     {
       'kind': 'category',
       'name': 'Movimentos',
